@@ -15,6 +15,8 @@ We provide two Colab notebooks:
 - **FCN_SZ_detection2.ipynb:**  
   This notebook covers the deep learning workflow. It includes data loading, model training, inference, and visualization using the FCN-based subduction zone detection framework.
 
+Necessary sample RGB images are under **rgb_images** folder.
+
 
 ## Installation
 
