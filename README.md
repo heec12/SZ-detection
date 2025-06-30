@@ -66,17 +66,18 @@ This will load the pre-trained model and example data, and output the predicted 
 - `cont_tracker_index`: (Optional) Continent margin locations, if calculated
 
 ---
-See Choi and Foley (2025) for details on output interpretation and further analysis.
+*See Choi and Foley (2025) for details on output interpretation and further analysis.*
 
 
-### Citation
+## Citation
 
 If you use this code or approach in your research, please cite:
 
-> Choi, H., & Foley, B. (2025).
-> Deep learning-based tracking of subduction zones in mantle convection models
-> Submitted to Journal of Geophysical Research: Solid Earth
+> Choi, H., & Foley, B. (2025).  
+> Deep learning-based tracking of subduction zones in mantle convection models.  
+> *Submitted to Journal of Geophysical Research: Solid Earth.*
 
-### Questions or issues?
+
+## Questions or issues?
 
 Open an issue on GitHub or contact hchoi342@gatech.edu
