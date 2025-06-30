@@ -27,4 +27,16 @@ To get started with example runs:
 1. **Clone the repository**:
 ```bash
 git clone https://github.com/heec12/SZ-detection.git
-cd 
+cd SZ_detection_FCN
+
+2. **Install dependencies**:
+This project requires Python 3.7+ and the following Python libraries:
+- numpy
+- matplotlib
+- torch (PyTorch)
+
+You can install the dependencies using pip:
+
+```bash
+pip install numpy matplotlib torch
+
