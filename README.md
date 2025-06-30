@@ -41,4 +41,21 @@ You can install the dependencies using pip:
 
 ```bash
 pip install numpy matplotlib torch
+```
 
+## Usage
+
+### 1. Run subduction zone detection on example data
+
+After installation, you can run the detection pipeline using the provided example files:
+
+```bash
+python conv_tracker_fcn.py
+```
+This will load the pre-trained model and example data, and output the predicted subduction zones and tracking results. Make sure the rgb file path is correctly addressed.
+
+
+### 2. Using your own data
+
+- Place your formatted RGB images in the rgb_images/ folder.
+- Update the file paths or arguments in the script as needed (see script comments).
