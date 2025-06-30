@@ -28,6 +28,7 @@ To get started with example runs:
 ```bash
 git clone https://github.com/heec12/SZ-detection.git
 cd SZ_detection_FCN
+```
 
 2. **Install dependencies**:
 This project requires Python 3.7+ and the following Python libraries:
