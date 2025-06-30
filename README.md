@@ -15,7 +15,7 @@ We provide two Colab notebooks:
 - **FCN_SZ_detection2.ipynb:**  
   This notebook covers the deep learning workflow. It includes data loading, model training, inference, and visualization using the FCN-based subduction zone detection framework.
 
-Necessary sample RGB images are under **rgb_images** folder.
+Necessary sample RGB images are under `rgb_images` folder.
 
 
 ## Installation
@@ -45,17 +45,38 @@ pip install numpy matplotlib torch
 
 ## Usage
 
-### 1. Run subduction zone detection on example data
+### Run subduction zone detection on example data
 
-After installation, you can run the detection pipeline using the provided example files:
+After installation, you can run the detection program using the provided example files:
 
 ```bash
 python conv_tracker_fcn.py
 ```
-This will load the pre-trained model and example data, and output the predicted subduction zones and tracking results. Make sure the rgb file path is correctly addressed.
+This will load the pre-trained model and example data, and output the predicted subduction zones and tracking results. Ensure the file paths for input RGB images and output files are specified correctly before running. 
 
 
-### 2. Using your own data
+### Output
 
-- Place your formatted RGB images in the rgb_images/ folder.
-- Update the file paths or arguments in the script as needed (see script comments).
+- The main output is saved as a `.npz` file (e.g., `sz_tracker_output_<modelname>.npz`).
+- This file contains arrays with subduction zone tracking indices and, optionally, continent margin locations.
+- You can load and analyze the `.npz` results in Python using `numpy.load`.
+
+**Contents:**
+- `conv_tracker_index`: Subduction zone tracking indices across all time steps
+- `cont_tracker_index`: (Optional) Continent margin locations, if calculated
+
+---
+See Choi and Foley (2025) for details on output interpretation and further analysis.
+
+
+### Citation
+
+If you use this code or approach in your research, please cite:
+
+> Choi, H., & Foley, B. (2025).
+> Deep learning-based tracking of subduction zones in mantle convection models
+> Submitted to Journal of Geophysical Research: Solid Earth
+
+### Questions or issues?
+
+Open an issue on GitHub or contact hchoi342@gatech.edu
