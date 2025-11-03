@@ -27,8 +27,8 @@ conv_tracker_index = np.zeros((ct_rows, ct_columns))
 
 # Main tracking function
 def track_subduction(model_name, total_timestep):
-    model_path = f'/rubin/s1/hxc5400/data/{model_name}/'
-    file_path = f'/rubin/s1/scratch/hxc5400/model_output/{model_name}'
+    model_path = f'../example/{model_name}/'
+    file_path = f'../example/{model_name}'
     conv_tracker_index = np.zeros((ct_rows, ct_columns))
 
     # Define average_u inside this function
