@@ -12,9 +12,9 @@ device = torch.device('cpu')
 # Initialize model, criterion, optimizer, and scheduler
 def initialize_model():
     model = FCN().to(device)
-    criterion = FocalLoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
+    optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
+    criterion = combined_loss  # BCE+Dice
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.2)
     return model, criterion, optimizer, scheduler
 
 # Humongous empty arrays
@@ -32,12 +32,12 @@ def track_subduction(model_name, total_timestep):
     conv_tracker_index = np.zeros((ct_rows, ct_columns))
 
     # Define average_u inside this function
-    average_u = 0.00774687768014917 * 512 / 4  # Define within function scope
+    average_u = -0.002398965988 * 512 / 4  # Define within function scope
 
     # Initial setup
-    top_row_boolean, left_sz0, right_sz0, sz0 = apply_fcn(str("{:0>4d}".format(0)), model, model_path, device)
+    top_row_boolean, left_sz0, right_sz0, sz0 = apply_fcn(str("{:0>4d}".format(0)), model_path, device)
     # left_cont0, right_cont0, _ = find_cont_loc(file_path, str("{:0>3d}".format(0)))
-    print("It started")
+    print("It started. Model:",model_name)
     print(left_sz0, right_sz0, sz0)
 
     for i in range(len(sz0)):
@@ -54,9 +54,9 @@ def track_subduction(model_name, total_timestep):
 
     for i in range(1, total_timestep):
         N = str("{:0>3d}".format(i))
-        print(f"\nProcessing timestep {i} - Image: {N}")
+        print(f"Processing timestep {i} - Image: {N}")
 
-        top_row_boolean1, left_sz1, right_sz1, sz1 = apply_fcn(N, model, model_path, device)
+        top_row_boolean1, left_sz1, right_sz1, sz1 = apply_fcn(N, model_path, device)
         # left_cont1, right_cont1, _ = find_cont_loc(file_path, N)
         # print("Left SZ:", left_sz1, "Right SZ:", right_sz1, "Subduction Zones:", sz1)
 
@@ -157,17 +157,21 @@ def update_tracker_increased_sz(i, sz0, sz1, conv_tracker_index, average_u):
 
 # Running Part
 model, criterion, optimizer, scheduler = initialize_model()
-m1 = 764
-m2 = 528
-# m3 = 999
-# m4 = 529
-# m5 = 153
+m1 = 355
+mnumber = m1
+m2 = 81
 mnumber = m1+m2
+m3 = 303
+mnumber = m1+m2+m3
+m4 = 90
+mnumber = m1+m2+m3+m4
+# m5 = 153
+# mnumber = m1+m2+m3+m4+m5
 # cont_index = initialize_cont_index(m1=mnumber)  # (m1=1192)
-modelname = 'dam1_diss_1.3_new_icmobR_crust090_vis100'
+modelname = 'dam1_diss_1.4_new_icmobR_crust095_vis100'
 
 # Load the trained model instead of training
-model_path = "trained_model_fcn_final.pt"
+model_path = "trained_model_fcn_best.pt"
 model.load_state_dict(torch.load(model_path, map_location=device))
 model.eval()  # Set to evaluation mode
 
@@ -193,30 +197,30 @@ for i in range(m2):
     cont_index1[m1+i, 1] = left_cont2
     cont_index1[m1+i, 2] = right_cont2
     cont_index1[m1+i, 3] = rtime1+rtime2
-# for i in range(m3):
-#     N = str("{:0>3d}".format(i))
-#     file_path = f'/rubin/s1/scratch/hxc5400/model_output/{modelname}_3'
-#     left_cont3, right_cont3, rtime3 = find_cont_loc(file_path, N)
-#     cont_index1[m1+m2+i, 0] = m1+m2 + i + 1
-#     cont_index1[m1+m2+i, 1] = left_cont3
-#     cont_index1[m1+m2+i, 2] = right_cont3
-#     cont_index1[m1+m2+i, 3] = rtime1 + rtime2 +rtime3
-# for i in range(m4):
-#     N = str("{:0>3d}".format(i))
-#     file_path = f'/rubin/s1/scratch/hxc5400/model_output/{modelname}_4'
-#     left_cont4, right_cont4, rtime4 = find_cont_loc(file_path, N)
-#     cont_index1[m1+m2+m3+i, 0] = m1+m2+m3 + i + 1
-#     cont_index1[m1+m2+m3+i, 1] = left_cont4
-#     cont_index1[m1+m2+m3+i, 2] = right_cont4
-#     cont_index1[m1+m2+m3+i, 3] = rtime1 + rtime2 +rtime3 + rtime4
+for i in range(m3):
+    N = str("{:0>3d}".format(i))
+    file_path = f'/rubin/s1/scratch/hxc5400/model_output/{modelname}_3'
+    left_cont3, right_cont3, rtime3 = find_cont_loc(file_path, N)
+    cont_index1[m1+m2+i, 0] = int(m1+m2 + i + 1)
+    cont_index1[m1+m2+i, 1] = left_cont3
+    cont_index1[m1+m2+i, 2] = right_cont3
+    cont_index1[m1+m2+i, 3] = rtime1 + rtime2 + rtime3
+for i in range(m4):
+    N = str("{:0>3d}".format(i))
+    file_path = f'/rubin/s1/scratch/hxc5400/model_output/{modelname}_4'
+    left_cont4, right_cont4, rtime4 = find_cont_loc(file_path, N)
+    cont_index1[m1+m2+m3+i, 0] = int(m1+m2+m3 + i + 1)
+    cont_index1[m1+m2+m3+i, 1] = left_cont4
+    cont_index1[m1+m2+m3+i, 2] = right_cont4
+    cont_index1[m1+m2+m3+i, 3] = rtime1 + rtime2 + rtime3 + rtime4
 # for i in range(m5):
 #     N = str("{:0>3d}".format(i))
 #     file_path = f'/rubin/s1/scratch/hxc5400/model_output/{modelname}_5'
 #     left_cont5, right_cont5, rtime5 = find_cont_loc(file_path, N)
-#     cont_index1[m1+m2+m3+m4+i, 0] = m1+m2+m3+m4 + i + 1
+#     cont_index1[m1+m2+m3+m4+i, 0] = int(m1+m2+m3+m4 + i + 1)
 #     cont_index1[m1+m2+m3+m4+i, 1] = left_cont5
 #     cont_index1[m1+m2+m3+m4+i, 2] = right_cont5
 #     cont_index1[m1+m2+m3+m4+i, 3] = rtime1 + rtime2 +rtime3 + rtime4 + rtime5
 
 # Save multiple matrices
-np.savez(f'sz_tracker_output_{modelname}.npz', conv_tracker_index=conv_tracker_index1, cont_tracker_index=cont_index1)
+np.savez(f'dist_threshold_test/10_sz_tracker_output_{modelname}.npz', conv_tracker_index=conv_tracker_index1, cont_tracker_index=cont_index1)

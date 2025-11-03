@@ -38,7 +38,7 @@ def new_active_array(ct_rows, conv_tracker_index, num_new_conv):
     return temp_new_active_matrix
 
 def find_closest(average_u,arr,element):
-    node_difference = 20 + average_u
+    node_difference = 10 + average_u
     leftover_element = -100
     #leftover_element_mag = -100
     index_cloest= []
