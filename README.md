@@ -127,7 +127,7 @@ python post_plot/post_plot_box_whisker.py
 *See Choi and Foley (2025) for details on output interpretation and further analysis.*
 
 
-## Citation
+## Cite this work
 
 If you use this code or approach in your research, please cite:
 
