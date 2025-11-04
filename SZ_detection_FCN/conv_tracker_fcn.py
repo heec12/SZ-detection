@@ -32,7 +32,7 @@ def track_subduction(model_name, total_timestep):
     conv_tracker_index = np.zeros((ct_rows, ct_columns))
 
     # Define average_u inside this function
-    average_u = -0.002398965988 * 512 / 4  # Define within function scope
+    average_u = 0.0327427495261508 * 512 / 4  # Define within function scope
 
     # Initial setup
     top_row_boolean, left_sz0, right_sz0, sz0 = apply_fcn(str("{:0>4d}".format(0)), model_path, device)
@@ -157,18 +157,18 @@ def update_tracker_increased_sz(i, sz0, sz1, conv_tracker_index, average_u):
 
 # Running Part
 model, criterion, optimizer, scheduler = initialize_model()
-m1 = 355
+m1 = 100
 mnumber = m1
-m2 = 81
-mnumber = m1+m2
-m3 = 303
-mnumber = m1+m2+m3
-m4 = 90
-mnumber = m1+m2+m3+m4
+# m2 = 81
+# mnumber = m1+m2
+# m3 = 303
+# mnumber = m1+m2+m3
+# m4 = 90
+# mnumber = m1+m2+m3+m4
 # m5 = 153
 # mnumber = m1+m2+m3+m4+m5
 # cont_index = initialize_cont_index(m1=mnumber)  # (m1=1192)
-modelname = 'dam1_diss_1.4_new_icmobR_crust095_vis100'
+modelname = 'dam1_diss_1.2_new_icmobR_crust095_vis100'
 
 # Load the trained model instead of training
 model_path = "trained_model_fcn_best.pt"
@@ -189,30 +189,30 @@ for i in range(m1):
     cont_index1[i, 1] = left_cont1
     cont_index1[i, 2] = right_cont1
     cont_index1[i, 3] = rtime1
-for i in range(m2):
-    N = str("{:0>3d}".format(i))
-    file_path = f'/rubin/s1/scratch/hxc5400/model_output/{modelname}_2'
-    left_cont2, right_cont2, rtime2 = find_cont_loc(file_path, N)
-    cont_index1[m1+i, 0] = int(m1+ i + 1)
-    cont_index1[m1+i, 1] = left_cont2
-    cont_index1[m1+i, 2] = right_cont2
-    cont_index1[m1+i, 3] = rtime1+rtime2
-for i in range(m3):
-    N = str("{:0>3d}".format(i))
-    file_path = f'/rubin/s1/scratch/hxc5400/model_output/{modelname}_3'
-    left_cont3, right_cont3, rtime3 = find_cont_loc(file_path, N)
-    cont_index1[m1+m2+i, 0] = int(m1+m2 + i + 1)
-    cont_index1[m1+m2+i, 1] = left_cont3
-    cont_index1[m1+m2+i, 2] = right_cont3
-    cont_index1[m1+m2+i, 3] = rtime1 + rtime2 + rtime3
-for i in range(m4):
-    N = str("{:0>3d}".format(i))
-    file_path = f'/rubin/s1/scratch/hxc5400/model_output/{modelname}_4'
-    left_cont4, right_cont4, rtime4 = find_cont_loc(file_path, N)
-    cont_index1[m1+m2+m3+i, 0] = int(m1+m2+m3 + i + 1)
-    cont_index1[m1+m2+m3+i, 1] = left_cont4
-    cont_index1[m1+m2+m3+i, 2] = right_cont4
-    cont_index1[m1+m2+m3+i, 3] = rtime1 + rtime2 + rtime3 + rtime4
+# for i in range(m2):
+#     N = str("{:0>3d}".format(i))
+#     file_path = f'/rubin/s1/scratch/hxc5400/model_output/{modelname}_2'
+#     left_cont2, right_cont2, rtime2 = find_cont_loc(file_path, N)
+#     cont_index1[m1+i, 0] = int(m1+ i + 1)
+#     cont_index1[m1+i, 1] = left_cont2
+#     cont_index1[m1+i, 2] = right_cont2
+#     cont_index1[m1+i, 3] = rtime1+rtime2
+# for i in range(m3):
+#     N = str("{:0>3d}".format(i))
+#     file_path = f'/rubin/s1/scratch/hxc5400/model_output/{modelname}_3'
+#     left_cont3, right_cont3, rtime3 = find_cont_loc(file_path, N)
+#     cont_index1[m1+m2+i, 0] = int(m1+m2 + i + 1)
+#     cont_index1[m1+m2+i, 1] = left_cont3
+#     cont_index1[m1+m2+i, 2] = right_cont3
+#     cont_index1[m1+m2+i, 3] = rtime1 + rtime2 + rtime3
+# for i in range(m4):
+#     N = str("{:0>3d}".format(i))
+#     file_path = f'/rubin/s1/scratch/hxc5400/model_output/{modelname}_4'
+#     left_cont4, right_cont4, rtime4 = find_cont_loc(file_path, N)
+#     cont_index1[m1+m2+m3+i, 0] = int(m1+m2+m3 + i + 1)
+#     cont_index1[m1+m2+m3+i, 1] = left_cont4
+#     cont_index1[m1+m2+m3+i, 2] = right_cont4
+#     cont_index1[m1+m2+m3+i, 3] = rtime1 + rtime2 + rtime3 + rtime4
 # for i in range(m5):
 #     N = str("{:0>3d}".format(i))
 #     file_path = f'/rubin/s1/scratch/hxc5400/model_output/{modelname}_5'
@@ -223,4 +223,4 @@ for i in range(m4):
 #     cont_index1[m1+m2+m3+m4+i, 3] = rtime1 + rtime2 +rtime3 + rtime4 + rtime5
 
 # Save multiple matrices
-np.savez(f'dist_threshold_test/10_sz_tracker_output_{modelname}.npz', conv_tracker_index=conv_tracker_index1, cont_tracker_index=cont_index1)
+np.savez(f'../example/new_sz_tracker_output_{modelname}.npz', conv_tracker_index=conv_tracker_index1, cont_tracker_index=cont_index1)
